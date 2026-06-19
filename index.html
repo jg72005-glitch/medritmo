@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121d18" />
+  <title>MedRitmo — estudos de Medicina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Página inicial do MedRitmo">
+      <span class="brand-mark">M</span><span>medritmo</span>
+    </a>
+    <nav class="tabs" aria-label="Navegação principal">
+      <button class="tab active" data-view="plano">Meu plano</button>
+      <button class="tab" data-view="questoes">Questões <span class="goal-pill">meta 70%</span></button>
+      <button class="tab" data-view="pomodoro">Pomodoro <span class="timer-pill">40 min</span></button>
+    </nav>
+    <div class="header-actions">
+      <button class="backup-btn" id="exportBtn" title="Baixar cópia dos seus dados" aria-label="Baixar backup"><b>↓</b><span>Backup</span></button>
+      <label class="backup-btn" title="Restaurar uma cópia dos seus dados"><b>↑</b><span>Restaurar</span><input id="importInput" type="file" accept="application/json,.json" hidden /></label>
+      <button class="icon-btn" id="resetBtn" title="Limpar todos os dados" aria-label="Limpar todos os dados">↻</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="view active" id="plano">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">SEU CICLO DE MEDICINA</p>
+          <h1>Medicina no ritmo<br><em>da sua vida.</em></h1>
+          <p class="hero-copy">Organize conteúdos médicos sem atropelar estágio, aulas ou descanso. O MedRitmo separa até duas matérias novas por dia, revisões rápidas e uma revisão geral no dia 1º.</p>
+        </div>
+        <div class="date-card">
+          <div class="date-icon"><span>JUN</span><strong>19</strong></div>
+          <div><small>Seu ciclo começa hoje</small><strong>19 jun → 01 jul</strong><span>9 dias de estudo</span></div>
+        </div>
+      </div>
+
+      <div class="planner-grid">
+        <aside class="setup-card card">
+          <div class="card-heading">
+            <span class="step">1</span>
+            <div><h2>Conteúdos médicos</h2><p>Escolha a área e descreva o tema</p></div>
+          </div>
+          <form id="topicForm" class="topic-form">
+            <label for="topicInput">Novo conteúdo</label>
+            <select id="areaInput" aria-label="Área da Medicina">
+              <option>Anatomia</option><option>Fisiologia</option><option>Clínica Médica</option><option>Cirurgia</option>
+              <option>Pediatria</option><option>Ginecologia e Obstetrícia</option><option>Farmacologia</option><option>Patologia</option>
+              <option>Saúde Coletiva</option><option>Outra área</option>
+            </select>
+            <div class="input-row">
+              <input id="topicInput" placeholder="Ex.: Ciclo cardíaco" autocomplete="off" maxlength="80" />
+              <button class="add-btn" type="submit" aria-label="Adicionar tema">+</button>
+            </div>
+          </form>
+          <div id="topicList" class="topic-list"></div>
+          <div class="settings">
+            <div><span>Data final</span><strong>01 de julho</strong></div>
+            <div><span>Modelo de revisão</span><strong>rápida + revisão final</strong></div>
+            <div><span>Dias de pausa</span><strong>26, 27, 28 e 29 jun</strong></div>
+          </div>
+          <button class="primary-btn" id="generateBtn"><span>Organizar meu ciclo</span><b>→</b></button>
+          <details class="routine-panel" open>
+            <summary><span><b>2</b> Minha rotina</span><small>estágio, aulas e outros</small></summary>
+            <p>Escolha quantas matérias novas cabem no dia. As revisões rápidas entram separadamente.</p>
+            <div id="availabilityList" class="availability-list"></div>
+            <form id="commitmentForm" class="commitment-form">
+              <label>Adicionar compromisso</label>
+              <select id="commitmentDate" aria-label="Data do compromisso"></select>
+              <input id="commitmentTitle" placeholder="Ex.: Estágio na enfermaria" maxlength="60" required />
+              <div class="input-row">
+                <select id="commitmentLimit" aria-label="Matérias possíveis nesse dia"><option value="0">Sem estudo nesse dia</option><option value="1">Consigo 1 matéria</option><option value="2" selected>Consigo 2 matérias</option></select>
+                <button class="small-add" type="submit">Adicionar</button>
+              </div>
+            </form>
+            <div id="commitmentList" class="commitment-list"></div>
+            <details class="semester-panel">
+              <summary><span><b>∞</b> Depois do 5º período</span><small>sem data final</small></summary>
+              <div class="semester-intro">
+                <p>Um planejador contínuo para os próximos semestres. Ele cria quantas semanas forem necessárias.</p>
+                <label>Nome deste ciclo<input id="semesterName" value="6º período" maxlength="40" /></label>
+              </div>
+              <form id="semesterTopicForm" class="commitment-form">
+                <label>Adicionar conteúdo do semestre</label>
+                <select id="semesterArea" aria-label="Área médica do próximo semestre">
+                  <option>Anatomia</option><option>Fisiologia</option><option>Clínica Médica</option><option>Cirurgia</option>
+                  <option>Pediatria</option><option>Ginecologia e Obstetrícia</option><option>Farmacologia</option><option>Patologia</option>
+                  <option>Saúde Coletiva</option><option>Outra área</option>
+                </select>
+                <div class="input-row"><input id="semesterTopicInput" placeholder="Ex.: Insuficiência cardíaca" maxlength="80" required /><button class="small-add" type="submit">Adicionar</button></div>
+              </form>
+              <div id="semesterTopicList" class="semester-topic-list"></div>
+              <h4>Matérias novas por dia da semana</h4>
+              <div id="weekdayLimits" class="weekday-limits"></div>
+              <button class="primary-btn" id="generateSemesterBtn" type="button"><span>Montar rotina contínua</span><b>→</b></button>
+              <div id="semesterSchedule" class="semester-schedule"></div>
+            </details>
+          </details>
+        </aside>
+
+        <section class="schedule-card card">
+          <div class="schedule-top">
+            <div>
+              <p class="eyebrow">CRONOGRAMA INTELIGENTE</p>
+              <h2>Seu caminho até a prova</h2>
+            </div>
+            <div class="legend"><span><i class="dot study"></i>Estudo</span><span><i class="dot review"></i>Revisão</span></div>
+          </div>
+          <div class="summary-strip">
+            <div><strong id="statTopics">0</strong><span>temas</span></div>
+            <div><strong id="statSessions">0</strong><span>encontros com a matéria</span></div>
+            <div><strong>01 jul</strong><span>revisão de tudo</span></div>
+            <div class="progress-summary"><span><b id="progressPct">0%</b> concluído</span><div class="bar"><i id="progressBar"></i></div></div>
+          </div>
+          <div id="schedule" class="schedule empty-state">
+            <div class="empty-orbit">✦</div>
+            <h3>Seu cronograma vai aparecer aqui</h3>
+            <p>Adicione pelo menos um conteúdo e clique em “Organizar meu ciclo”.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="pomodoro">
+      <div class="pomodoro-shell">
+        <div class="pomodoro-copy">
+          <p class="eyebrow">FOCO CLÍNICO</p>
+          <h1>Quarenta minutos.<br><em>Uma missão.</em></h1>
+          <p class="hero-copy">Este relógio é independente do cronograma. Use, pause ou repita quantos ciclos precisar — ele controla seu tempo, não limita o estudo da matéria.</p>
+          <div class="focus-prescription"><span>Rx</span><div><strong>Seu tempo, no seu controle</strong><p>40 min foco · 5 min pausa · repita se precisar</p></div></div>
+        </div>
+        <section class="pomodoro-card card">
+          <div class="pomodoro-status"><i></i><span id="timerStatus">Pronto para focar</span></div>
+          <div class="timer-ring" id="timerRing"><div><strong id="timerDisplay">40:00</strong><span id="timerPhase">FOCO</span></div></div>
+          <label class="timer-topic-label">O que você vai estudar agora?
+            <input id="timerTopic" placeholder="Ex.: Fisiologia cardiovascular" />
+          </label>
+          <div class="timer-actions">
+            <button class="timer-secondary" id="timerReset" aria-label="Reiniciar timer">↻</button>
+            <button class="timer-main" id="timerToggle">▶ <span>Começar</span></button>
+            <button class="timer-secondary" id="skipTimer" aria-label="Pular etapa">↠</button>
+          </div>
+          <div class="music-control">
+            <div><span class="music-icon">♫</span><p><strong>Trilha de concentração</strong><small>ambiente instrumental suave</small></p></div>
+            <button id="musicToggle" aria-pressed="false"><i></i><span>Desligada</span></button>
+          </div>
+          <p class="audio-note">O som é gerado no seu dispositivo e não usa internet.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="questoes">
+      <div class="questions-hero">
+        <div>
+          <p class="eyebrow">PAINEL DE QUESTÕES</p>
+          <h1>Treine com uma<br><em>meta clara.</em></h1>
+          <p class="hero-copy">Registre seus resultados. O cálculo mostra quantos acertos seguidos levam você até 70% — e acompanha sua evolução sessão por sessão.</p>
+        </div>
+        <div class="target-ring" id="targetRing"><div><strong id="ringPct">0%</strong><span>sua taxa</span></div></div>
+      </div>
+
+      <div class="questions-grid">
+        <section class="card log-card">
+          <div class="card-heading"><span class="step">1</span><div><h2>Registrar treino</h2><p>Como foi sua última lista?</p></div></div>
+          <form id="questionForm">
+            <div class="field-pair">
+              <label>Questões feitas<input id="totalInput" type="number" min="1" max="1000" placeholder="20" required /></label>
+              <label>Acertos<input id="correctInput" type="number" min="0" max="1000" placeholder="14" required /></label>
+            </div>
+            <label>Conteúdo (opcional)<input id="questionTopic" maxlength="60" placeholder="Ex.: Funções" /></label>
+            <button class="primary-btn" type="submit"><span>Salvar resultado</span><b>+</b></button>
+          </form>
+          <div class="history-head"><h3>Histórico</h3><button id="clearHistory">Limpar</button></div>
+          <div id="questionHistory" class="history-list"></div>
+        </section>
+
+        <section class="card performance-card">
+          <div class="performance-header">
+            <div><p class="eyebrow">SEU DESEMPENHO</p><h2 id="performanceTitle">Comece seu primeiro treino</h2></div>
+            <span class="status-badge" id="statusBadge">Aguardando dados</span>
+          </div>
+          <div class="big-number"><strong id="neededCount">—</strong><div><span id="neededLabel">questões até a meta</span><small id="neededHint">Registre um resultado para calcular</small></div></div>
+          <div class="meter-wrap">
+            <div class="meter-labels"><span>0%</span><b>Meta 70%</b><span>100%</span></div>
+            <div class="meter"><i id="accuracyBar"></i><mark></mark></div>
+          </div>
+          <div class="explain-box">
+            <span>i</span><p id="calculationExplain">Quando sua taxa estiver abaixo da meta, calcularemos o menor número de questões que você precisa acertar em sequência para atingir 70%.</p>
+          </div>
+          <div class="mini-stats">
+            <div><span>Total resolvido</span><strong id="totalSolved">0</strong></div>
+            <div><span>Total de acertos</span><strong id="totalCorrect">0</strong></div>
+            <div><span>Faltam para 70%</span><strong id="gapPct">70 p.p.</strong></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>MedRitmo</span><p>Formação médica com intenção, sem esquecer a pessoa por trás do jaleco.</p><small>Dados salvos neste navegador.</small></footer>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
